@@ -1,25 +1,45 @@
 import logo from './logo.svg';
 import './App.css';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class Counter extends React.Component {
+  constructor(props) {
+  super(props)
+  this.state = {
+    count: '',
+    countDown: 'false'
+  }
+}
+handlechange= (e) => {
+  this.setState({count: e.target.value})
+  console.log("count", this.state.count);
 }
 
-export default App;
+start = () => {
+  this.setState({countDown: true})
+ const interval = setInterval(() => {  
+    this.setState({count: (this.state.count)-1})
+    if (this.state.count <= 1) {
+      clearInterval(interval)
+      this.setState({countDown: 'false'})
+    }
+    
+  }, 1000);
+  
+}
+
+render() {
+  return (
+    <>
+    <h1>Timer Value:</h1>
+    <input type="number" onChange={(e)=> {this.handlechange(e)}}></input>
+    {this.state.countDown === 'false' ? <><button onClick={() => { this.start(); } }>Start</button><br /><br /></> : <button disabled>Start</button>}
+    <h2>Countdown: {this.state.count}</h2>
+
+    </>
+  )
+}
+
+}
+
+export default Counter;
