@@ -16,6 +16,7 @@ class Timer extends React.Component {
   }
 
   start = () => {
+    if (this.state.count >= 0) {
     this.setState({ countDown: true }, () => {
       const interval = setInterval(() => {
         this.setState((prevState) => ({ count: prevState.count - 1 }), () => {
@@ -26,6 +27,7 @@ class Timer extends React.Component {
         })
       }, 1000)
     })
+  }
   }
 
   render() {
