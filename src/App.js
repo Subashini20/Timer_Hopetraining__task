@@ -2,44 +2,46 @@ import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 
-class Counter extends React.Component {
+class Timer extends React.Component {
   constructor(props) {
-  super(props)
-  this.state = {
-    count: '',
-    countDown: 'false'
+    super(props)
+    this.state = {
+      count: 0,
+      countDown: false
+    }
+  }
+
+  handleChange = (e) => {
+    this.setState({ count: parseInt(e.target.value) })
+  }
+
+  start = () => {
+    this.setState({ countDown: true }, () => {
+      const interval = setInterval(() => {
+        this.setState((prevState) => ({ count: prevState.count - 1 }), () => {
+          if (this.state.count <= 0) {
+            clearInterval(interval)
+            this.setState({ countDown: false })
+          }
+        })
+      }, 1000)
+    })
+  }
+
+  render() {
+    return (
+      <>
+        <h1>Timer Value:</h1>
+        <input type="number" onChange={this.handleChange}></input>
+        {this.state.countDown ? (
+          <button disabled>Start</button>
+        ) : (
+          <button onClick={this.start}>Start</button>
+        )}
+        <h2>Countdown: {this.state.count}</h2>
+      </>
+    )
   }
 }
-handlechange= (e) => {
-  this.setState({count: e.target.value})
-  console.log("count", this.state.count);
-}
 
-start = () => {
-  this.setState({countDown: true})
- const interval = setInterval(() => {  
-    this.setState({count: (this.state.count)-1})
-    if (this.state.count <= 1) {
-      clearInterval(interval)
-      this.setState({countDown: 'false'})
-    }
-    
-  }, 1000);
-  
-}
-
-render() {
-  return (
-    <>
-    <h1>Timer Value:</h1>
-    <input type="number" onChange={(e)=> {this.handlechange(e)}}></input>
-    {this.state.countDown === 'false' ? <><button onClick={() => { this.start(); } }>Start</button><br /><br /></> : <button disabled>Start</button>}
-    <h2>Countdown: {this.state.count}</h2>
-
-    </>
-  )
-}
-
-}
-
-export default Counter;
+export default Timer;
